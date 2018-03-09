@@ -36,11 +36,11 @@ namespace anpi {
   template<typename T>
   T rootBrent(const std::function<T(T)>& funct,T xl,T xu,const T eps) {
     if(xl>=xu){throw Exception("interval is reversed");}
-    if(xl*xu>0){throw Exception("interval doesn't enclose the root");}
+    if(funct(xl)*funct(xu)>0){throw Exception("interval doesn't enclose the root");}
     T es =((xu-xl)/3)*eps;// new threshold
     T maximum = std::numeric_limits<T>::digits;//maximum number of iterations to be made in the search
     T fxl = funct(xl);
-    T fxu = funct(xu);   
+    T fxu = funct(xu);
     T fxr = T();      // initialize
     if (std::abs(fxl) < std::abs(xu)){
       std::swap(xl,xu);
