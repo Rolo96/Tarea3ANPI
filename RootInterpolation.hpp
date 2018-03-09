@@ -35,7 +35,7 @@ namespace anpi {
   template<typename T>
   T rootInterpolation(const std::function<T(T)>& funct,T xl,T xu,const T eps) {
     if(xl>=xu){throw Exception("interval is reversed");}
-    if(xl*xu>0){throw Exception("interval doesn't enclose the root");}
+    if(funt(xl)*funt(xu)>0){throw Exception("interval doesn't enclose the root");}
     using std::abs;
     T maximum = std::numeric_limits<T>::digits;//maximum number of iterations to be made in the search
     T error=T();//Approximate error
