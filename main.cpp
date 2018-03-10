@@ -27,21 +27,19 @@ void solve(const std::function<T(const std::function<T(T)>&,
                                 T,
                                 const T)>& solver, std::vector<T> &counts1, std::vector<T> &counts2, std::vector<T> &counts3){
     anpi::encapsulator<T> e;
-    T eps = T(0.1);
-    for (int i = 0; i < 6; ++i) {
-        solver(e.template funct1,T(0),T(2),eps);
-        counts1[i] = T(e.getF1count());
+    int index = 0;
+    for (T eps=T(1)/T(10); eps>static_cast<T>(1.0e-7); eps/=T(10)) {
         e.setF1count(-e.getF1count());
-
-        solver(e.template funct2,T(0),T(2),eps);
-        counts2[i] = T(e.getF2count());
-        e.setF2count(-e.getF2count());
-
         solver(e.template funct1,T(0),T(2),eps);
-        counts3[i] = T(e.getF3count());
-        e.setF3count(-e.getF3count());
+        counts1[index] = T(e.getF1count());
 
-        eps /= T(10);
+        e.setF2count(-e.getF2count());
+        solver(e.template funct2,T(0),T(2),eps);
+        counts2[index] = T(e.getF2count());
+
+        e.setF3count(-e.getF3count());
+        solver(e.template funct1,T(0),T(2),eps);
+        counts3[index++] = T(e.getF3count());
     }
 
 }
@@ -51,21 +49,19 @@ void solve2(const std::function<T(const std::function<T(T)>&,
                                  T,
                                  const T)>& solver, std::vector<T> &counts1, std::vector<T> &counts2, std::vector<T> &counts3){
     anpi::encapsulator<T> e;
-    T eps = T(0.1);
-    for (int i = 0; i < 6; ++i) {
-        solver(e.template funct1,T(0),eps);
-        counts1[i] = T(e.getF1count());
+    int index  = 0;
+    for (T eps=T(1)/T(10); eps>static_cast<T>(1.0e-7); eps/=T(10)) {
         e.setF1count(-e.getF1count());
-
-        solver(e.template funct2,T(2),eps);
-        counts2[i] = T(e.getF2count());
-        e.setF2count(-e.getF2count());
-
         solver(e.template funct1,T(0),eps);
-        counts3[i] = T(e.getF3count());
-        e.setF3count(-e.getF3count());
+        counts1[index] = T(e.getF1count());
 
-        eps /= T(10);
+        e.setF2count(-e.getF2count());
+        solver(e.template funct2,T(2),eps);
+        counts2[index] = T(e.getF2count());
+
+        e.setF3count(-e.getF3count());
+        solver(e.template funct3,T(0),eps);
+        counts3[index++] = T(e.getF3count());
     }
 
 }
@@ -89,7 +85,7 @@ int main() {
     double epsd = 0.1;
 
     std::vector<float> Epsf(6);
-    std::vector<double > Epsd(6);
+    std::vector<double > Epsd(7);
     for (int i = 0; i < 6; ++i) { //esto porque los vectores del epsilon son iguales
                                     // para todos entonces se hace solo uno para float y double
                                         // No se si sera buena idea
@@ -98,13 +94,15 @@ int main() {
         epsd /= 10.0;
         epsf /= 10.0f;
     }
+    epsd /= 10.0;
+    Epsd[6] = epsd;
 
     std::vector<float> countsf1(6);
     std::vector<float> countsf2(6);
     std::vector<float> countsf3(6);
-    std::vector<double> countsd1(6);
-    std::vector<double> countsd2(6);
-    std::vector<double> countsd3(6);
+    std::vector<double> countsd1(7);
+    std::vector<double> countsd2(7);
+    std::vector<double> countsd3(7);
 
     solve<float>(anpi::rootInterpolation<float>,countsf1,countsf2,countsf3);
     p1->plot(countsf1,Epsf,"Interpolacion","blue");
@@ -152,4 +150,5 @@ int main() {
 
     return EXIT_FAILURE;
 }
+  
   
