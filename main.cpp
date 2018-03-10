@@ -17,10 +17,17 @@
 #include "RootNewtonRaphson.hpp"
 #include "RootBisection.hpp"
 #include "RootSecant.hpp"
-
 #include "vector"
 #include "PlotPy.hpp"
 
+/**
+ * Count how many calls receive each function
+ * @tparam T type float or double
+ * @param solver algorithm that find the roots
+ * @param counts1 vector that store number of calls for function 1
+ * @param counts2 vector that store number of calls for function 2
+ * @param counts3 vector that store number of calls for function 3
+ */
 template <typename T>
 void solve(const std::function<T(const std::function<T(T)>&,
                                 T,
@@ -38,12 +45,19 @@ void solve(const std::function<T(const std::function<T(T)>&,
         counts2[index] = T(e.getF2count());
 
         e.setF3count(-e.getF3count());
-        solver(e.template funct1,T(0),T(2),eps);
+        solver(e.template funct3,T(0),T(0.5),eps);
         counts3[index++] = T(e.getF3count());
     }
 
 }
-
+/**
+ * Function for Newton-Raphson. Count how many calls receive each function
+ * @tparam T type float or double
+ * @param solver algorithm that find the roots
+ * @param counts1 vector that store number of calls for function 1
+ * @param counts2 vector that store number of calls for function 2
+ * @param counts3 vector that store number of calls for function 3
+ */
 template <typename T>
 void solve2(const std::function<T(const std::function<T(T)>&,
                                  T,
@@ -66,21 +80,48 @@ void solve2(const std::function<T(const std::function<T(T)>&,
 
 }
 
+/**
+ * Main function. Obtain the vectors of number of calls for each function and create plots of the graphs
+ * @return
+ */
 int main() {
     anpi::Plot2d<float> *p1 = new anpi::Plot2d<float>();
     p1->initialize(1);
 
     anpi::Plot2d<double> *p2d = new anpi::Plot2d<double>();
-    p2d->initialize(1);
+    p2d->initialize(2);
+
+    p1->figure(1);
+    p1->setTitle("Figure #1. Threshold vs Calls, Function #1 (Float precision)");
+    p1->setXLabel("Calls");
+    p1->setYLabel("Threshold");
+    p1->figure(2);
+    p1->setTitle("Figure #2. Threshold vs Calls, Function #2 (Float precision)");
+    p1->setXLabel("Calls");
+    p1->setYLabel("Threshold");
+    p1->figure(3);
+    p1->setTitle("Figure #3. Threshold vs Calls, Function #3 (Float precision)");
+    p1->setXLabel("Calls");
+    p1->setYLabel("Threshold");
+    p2d->figure(4);
+    p2d->setTitle("Figure #4. Threshold vs Calls, Function #1 (Double precision)");
+    p2d->setXLabel("Calls");
+    p2d->setYLabel("Threshold");
+    p2d->figure(5);
+    p2d->setTitle("Figure #5. Threshold vs Calls, Function #2 (Double precision)");
+    p2d->setXLabel("Calls");
+    p2d->setYLabel("Threshold");
+    p2d->figure(6);
+    p2d->setTitle("Figure #6. Threshold vs Calls, Function #3 (Double precision)");
+    p2d->setXLabel("Calls");
+    p2d->setYLabel("Threshold");
+
 
     float epsf = 0.1f;
     double epsd = 0.1;
-
-    std::vector<float> Epsf(6);
-    std::vector<double > Epsd(7);
-    for (int i = 0; i < 6; ++i) { //esto porque los vectores del epsilon son iguales
-                                    // para todos entonces se hace solo uno para float y double
-                                        // No se si sera buena idea
+    std::vector<float> Epsf(6); //vector which store eps for float
+    std::vector<double > Epsd(7); //vector which store eps for double
+    for (int i = 0; i < 6; ++i) {
         Epsd[i] = epsd;
         Epsf[i] = epsf;
         epsd /= 10.0;
