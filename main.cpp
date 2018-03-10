@@ -122,10 +122,10 @@ int main() {
     p1->plot(countsf1,Epsf,"Brent","green");
     p2->plot(countsf2,Epsf,"Brent","green");
     p3->plot(countsf3,Epsf,"Brent","green");
-    //solve2(anpi::rootNewtonRaphson<float>,countsf1,countsf2,countsf3);
-    //p1->plot(countsf1,Epsf,"Newton","orange");
-    //p2->plot(countsf2,Epsf,"Newton","orange");
-    //p3->plot(countsf3,Epsf,"Newton","orange");
+    solve2<float>(anpi::rootNewtonRaphson<float>,countsf1,countsf2,countsf3);
+    p1->plot(countsf1,Epsf,"Newton","orange");
+    p2->plot(countsf2,Epsf,"Newton","orange");
+    p3->plot(countsf3,Epsf,"Newton","orange");
 
     solve<double>(anpi::rootInterpolation<double>,countsd1,countsd2,countsd3);
     p1d->plot(countsd1,Epsd,"Interpolacion","blue");
@@ -143,10 +143,10 @@ int main() {
     p1d->plot(countsd1,Epsd,"Brent","green");
     p2d->plot(countsd2,Epsd,"Brent","green");
     p3d->plot(countsd3,Epsd,"Brent","green");
-    //solve2<double>(anpi::rootNewtonRaphson<double>,countsd1,countsd2,countsd3);
-    //p1d->plot(countsd1,Epsd,"Newton","orange");
-    //p2d->plot(countsd2,Epsd,"Newton","orange");
-    //p3d->plot(countsd3,Epsd,"Newton","orange");
+    solve2<double>(anpi::rootNewtonRaphson<double>,countsd1,countsd2,countsd3);
+    p1d->plot(countsd1,Epsd,"Newton","orange");
+    p2d->plot(countsd2,Epsd,"Newton","orange");
+    p3d->plot(countsd3,Epsd,"Newton","orange");
 
     p1->show();
 
