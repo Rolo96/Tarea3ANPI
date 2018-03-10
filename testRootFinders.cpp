@@ -69,7 +69,7 @@ namespace anpi {
         }
         
         try {
-          solver(t3<T>,T(0),T(2),eps);
+          solver(t3<T>,T(1),T(2),eps);
           BOOST_CHECK(false && "solver should catch unenclosed root");
         } catch(Exception exc ) {
           BOOST_CHECK(true && "successfully catched");
